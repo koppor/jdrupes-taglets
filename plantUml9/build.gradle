@@ -60,8 +60,6 @@ compileJava {
 //    options.compilerArgs << '--add-exports=jdk.javadoc/jdk.javadoc.internal.doclets.formats.html=ALL-UNNAMED'
 }
 
-def gitDescriptorProvider = providers.provider { grgit.describe() }
-
 jar {
     into("META-INF/maven/$project.group/$project.name") {
         from { generatePomFileForMavenPublication }
@@ -69,13 +67,15 @@ jar {
     }
 
     manifest {
+        inputs.property("gitDescriptor", { grgit.describe() })
+
         // Set Git revision information in the manifests of built bundles
         attributes('Git-SHA': grgit.head().id)
     }
 
     doFirst {
         manifest {
-            attributes('Git-Descriptor': gitDescriptorProvider.get())
+            attributes('Git-Descriptor': inputs.properties['gitDescriptor'])
         }
     }
 }
