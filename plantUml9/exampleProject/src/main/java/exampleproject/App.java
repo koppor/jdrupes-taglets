@@ -3,10 +3,10 @@ package exampleproject;
 /**
  * <img src="example.svg" alt="UML diagram showing Alice authenticating at Bob">
  *
- * {@plantuml example.svg
+ * @startuml example.svg
  * Alice --> Bob: Authentication Request
- * Alice <-- Bob: Authentication Response
- * }
+ * Bob --> Alice: Authentication Response
+ * @enduml
  *
  * Just run the application
  */
