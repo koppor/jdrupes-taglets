@@ -28,3 +28,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: ./gradlew :plantUml9:java11doc
+      - name: Build JavaDoc of example project
+        run: ./gradlew javadoc
+        working-directory: plantUml9/exampleProject
+      - uses: actions/upload-artifact@v3
+        with:
+          name: JavaDoc of example project
+          path: plantUml9/exampleProject/build/docs/javadoc
