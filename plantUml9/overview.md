@@ -8,7 +8,7 @@ the API introduced in Java 9. It has been tested with Java-11.**
 
 ## Changes of version 3.0.0
 
-- One can use `{@plantuml ...}` to avoid HTML escaping of `<` and `>`. This is similar to the new [JEP 413: Code Snippets in Java API Documentation](https://openjdk.org/jeps/413).
+- One can use <code>{@</code><code>plantuml}</code> to avoid HTML escaping of `<` and `>`. This is similar to the new [JEP 413: Code Snippets in Java API Documentation](https://openjdk.org/jeps/413).
 - `@startuml` now unescapes HTML escapings `<` and `>`.
 - `@plantuml` is now completely lower case. In case you want to have mixed case, additionally use `PlantUmlMixedCase`.
 - Starting with version 3.0.0 the taglet requires Java-17.
