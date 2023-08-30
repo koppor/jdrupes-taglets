@@ -25,3 +25,5 @@ jobs:
         run: ./gradlew build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Create fat JAR
+        run: ./gradlew :plantUml9:shadowJar
