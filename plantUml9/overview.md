@@ -75,8 +75,7 @@ compatibility with other tools, like e.g. the
 [PlantUML Eclipse Plugin](http://plantuml.com/eclipse) or the
 [PlantUML IDEA Plugin](https://github.com/esteinberg/plantuml4idea).
 
-Invoking
---------
+## Invoking
 
 ### Gradle
  
@@ -122,8 +121,7 @@ really use it.
 
 Still using this? Well, you're on your own...
 
-Notes
------
+## Notes
 
 This taglet is released under the
 [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0-standalone.html).
