@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Install graphviz
         run: sudo apt-get install -qy graphviz
       - name: Set up JDK ${{ matrix.java-version }}
