@@ -99,7 +99,7 @@ public class PlantUml implements Taglet {
     private void processTag(DocTree tree, Element element) {
         String[] splitSource = tree.toString().split("\\s", 3);
         if (splitSource.length < 3) {
-            Logger.log(Level.WARNING, "Invalid %0 tag. Content: %1", getName(), tree.toString())
+            Logger.log(Level.WARNING, "Invalid %0 tag. Content: %1", getName(), tree.toString());
             throw new IllegalArgumentException("Invalid " + getName()
                 + " tag: Expected filename and PlantUML source");
         }
