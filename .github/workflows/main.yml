@@ -23,9 +23,7 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: temurin
-      - name: Build with Gradle
-        run: ./gradlew build
+      - run: ./gradlew build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      - name: Create fat JAR
-        run: ./gradlew :plantUml9:shadowJar
+      - run: ./gradlew :plantUml9:java11doc

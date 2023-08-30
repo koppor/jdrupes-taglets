@@ -33,15 +33,20 @@ description = 'A taglet for processing PlantUML in javadoc comments'
 archivesBaseName = "plantuml-taglet"
 
 configurations {
-	mdoclet
+    doclets
+    taglets
 }
 
 dependencies {
-	implementation group:'net.sourceforge.plantuml', name:'plantuml', version:'1.2023.8'
+    implementation group:'net.sourceforge.plantuml', name:'plantuml', version:'1.2023.8'
 
-	// Add this to compile as well for debugging
-	implementation 'org.jdrupes.mdoclet:doclet:2.1.0'
-	// mdoclet 'com.github.mnlipp.jdrupes-mdoclet:doclet:master-SNAPSHOT'
+    // Add this to compile as well for debugging
+    implementation 'org.jdrupes.mdoclet:doclet:2.1.0'
+
+    // doclets 'com.github.mnlipp.jdrupes-mdoclet:doclet:master-SNAPSHOT'
+    doclets "org.jdrupes.mdoclet:doclet:2.1.0"
+
+    taglets "org.jdrupes.taglets:plantuml-taglet:2.1.0"
 }
 
 // Configure sensible layout
@@ -50,9 +55,9 @@ sourceSets {
         java {
             srcDir 'src'
         }
-		resources {
-			srcDir 'resources'
-		}
+        resources {
+            srcDir 'resources'
+        }
     }
 }
 
@@ -80,16 +85,16 @@ jar {
     }
 }
 
-configurations {
-    markdownDoclet
+javadoc {
+    options.tagletPath = configurations.taglets.files.asType(List)
+    options.taglets = ["org.jdrupes.taglets.plantUml.PlantUml"]
 }
 
-dependencies {
-    markdownDoclet "org.jdrupes.mdoclet:doclet:2.1.0"
-}
+def isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows()
+def pathSeparator = isWindows ? ';' : ':'
 
 task java11doc(type: JavaExec) {
-    dependsOn classes
+    dependsOn shadowJar
     inputs.file "overview.md"
 
     jvmArgs = ['--add-exports=jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED']
@@ -105,9 +110,9 @@ task java11doc(type: JavaExec) {
         '-link', 'https://docs.oracle.com/en/java/javase/11/docs/api/',
         '--add-exports', 'jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED',
         '-doclet', 'org.jdrupes.mdoclet.MDoclet',
-        '-docletpath', configurations.markdownDoclet.files.asType(List).join(":"),
+        '-docletpath', configurations.doclets.files.asType(List).join(pathSeparator),
         '--disable-auto-highlight',
-        '-tagletpath', files(tasks.jar).asType(List).join(":"),
+        '-tagletpath', files(tasks.jar).asType(List).join(pathSeparator),
         '-taglet', 'org.jdrupes.taglets.plantUml.PlantUml',
         '-taglet', 'org.jdrupes.taglets.plantUml.StartUml',
         '-taglet', 'org.jdrupes.taglets.plantUml.EndUml',
@@ -141,9 +146,9 @@ artifacts {
 
 // Allow build without signing information (e.g. travis)
 if (project.hasProperty('signing.keyId')) {
-	signing {
-		sign configurations.archives
-	}
+    signing {
+        sign configurations.archives
+    }
 }
 
 publishing {
