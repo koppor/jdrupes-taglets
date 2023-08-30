@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
@@ -51,6 +52,8 @@ import net.sourceforge.plantuml.preproc.Defines;
  * specifications in the comment.
  */
 public class PlantUml implements Taglet {
+
+    private static final Logger Logger = Logging.getLogger(PlantUml.class);
 
     private DocletEnvironment env;
     private JavaFileManager fileManager;
@@ -96,6 +99,7 @@ public class PlantUml implements Taglet {
     private void processTag(DocTree tree, Element element) {
         String[] splitSource = tree.toString().split("\\s", 3);
         if (splitSource.length < 3) {
+            Logger.log(Level.WARNING, "Invalid %0 tag. Content: %1", getName(), tree.toString())
             throw new IllegalArgumentException("Invalid " + getName()
                 + " tag: Expected filename and PlantUML source");
         }
