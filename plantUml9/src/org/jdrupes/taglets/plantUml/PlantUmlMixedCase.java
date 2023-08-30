@@ -1,6 +1,6 @@
 /*
  * JDrupes MDoclet
- * Copyright (C) 2021 Michael N. Lipp
+ * Copyright (C) 2023 Michael N. Lipp and contributors
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -15,22 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.jdrupes.taglets.plantUml;
-
-/**
- * An alias for {@link PlantUml}.
- */
-public class StartUml extends PlantUml {
-
-    public StartUml() {
-        super();
-        super.shouldReplaceHtmlEscapings = true;
-    }
-
+public class PlantUmlMixedCase extends PlantUml {
     @Override
     public String getName() {
-        return "startuml";
+        return "plantUml";
     }
-
 }

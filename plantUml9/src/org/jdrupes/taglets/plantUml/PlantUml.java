@@ -1,18 +1,19 @@
 /*
  * JDrupes MDoclet
  * Copyright (C) 2021 Michael N. Lipp
- * 
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU Affero General Public License as published by 
- * the Free Software Foundation; either version 3 of the License, or 
+ * Copyright (C) 2023 Michael N. Lipp and contributors
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but 
+ * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License 
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Affero General Public License along 
+ * You should have received a copy of the GNU Affero General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -46,7 +47,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.preproc.Defines;
 
 /**
- * A JDK11 doclet that generates UML diagrams from PlantUML 
+ * A JDK11 doclet that generates UML diagrams from PlantUML
  * specifications in the comment.
  */
 public class PlantUml implements Taglet {
@@ -54,6 +55,8 @@ public class PlantUml implements Taglet {
     private DocletEnvironment env;
     private JavaFileManager fileManager;
     private List<String> plantConfigData;
+
+    protected boolean shouldReplaceHtmlEscapings = false;
 
     @Override
     public void init(DocletEnvironment env, Doclet doclet) {
@@ -63,7 +66,7 @@ public class PlantUml implements Taglet {
 
     @Override
     public String getName() {
-        return "plantUml";
+        return "plantuml";
     }
 
     @Override
@@ -74,7 +77,12 @@ public class PlantUml implements Taglet {
 
     @Override
     public boolean isInlineTag() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean isBlockTag() {
+        return true;
     }
 
     @Override
@@ -86,8 +94,7 @@ public class PlantUml implements Taglet {
     }
 
     private void processTag(DocTree tree, Element element) {
-        String plantUmlSource = tree.toString();
-        String[] splitSource = plantUmlSource.split("\\s", 3);
+        String[] splitSource = tree.toString().split("\\s", 3);
         if (splitSource.length < 3) {
             throw new IllegalArgumentException("Invalid " + getName()
                 + " tag: Expected filename and PlantUML source");
@@ -105,8 +112,16 @@ public class PlantUml implements Taglet {
                     + splitSource[1] + ": " + e.getLocalizedMessage());
         }
 
+        String plantUmlContent = splitSource[2];
+        if (shouldReplaceHtmlEscapings) {
+            // replace HTML escapes of < and >
+            plantUmlContent = plantUmlContent
+                    .replace("&lt;", "<")
+                    .replace("&gt;", ">");
+        }
+
         // render
-        plantUmlSource = "@startuml\n" + splitSource[2].trim() + "\n@enduml";
+        String plantUmlSource = "@startuml\n" + plantUmlContent + "\n@enduml";
         SourceStringReader reader = new SourceStringReader(
             Defines.createEmpty(), plantUmlSource, plantConfig());
         try {
