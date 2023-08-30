@@ -36,8 +36,7 @@ jobs:
           name: Test JavaDocs
           path: plantUml9/build/test-javadocs
       - name: Build JavaDoc of example project
-        run: ./gradlew javadoc
-        working-directory: plantUml9/exampleProject
+        run: ./gradlew -p plantUml9/exampleProject javadoc
       - uses: actions/upload-artifact@v3
         with:
           name: JavaDoc of example project
