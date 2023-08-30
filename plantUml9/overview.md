@@ -74,7 +74,7 @@ PlantUML.
  */
 ```
 
-The old preferred approach (verisons 2.x) was to put the PlantUML source in
+The old preferred approach (versions 2.x) was to put the PlantUML source in
 comments as shown below.
 
 ```java
@@ -123,7 +123,6 @@ dependencies {
 }
 
 javadoc {
-
     options.tagletPath = configurations.javadocTaglets.files as List
     options.taglets = ["org.jdrupes.taglets.plantUml.PlantUml", "org.jdrupes.taglets.plantUml.StartUml", "org.jdrupes.taglets.plantUml.EndUml"]
     ...
