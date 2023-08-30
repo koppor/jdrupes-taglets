@@ -103,7 +103,6 @@ public class PlantUml implements Taglet {
             logger.log(Level.WARNING, "Invalid {0} tag. Content: {1}", new Object[] {getName(), tree.toString()});
             IllegalArgumentException exception = new IllegalArgumentException("Invalid " + getName()
                 + " tag: Expected filename and PlantUML source");
-            Logme.error(exception);
             throw exception;
         }
 
